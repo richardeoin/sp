@@ -27,15 +27,16 @@ function get_value(id) {
 function mb_update() {
   // Get input values and check them
   var major = get_value('major');
+  var midsection = get_value('midsection');
   var fd = get_value('fd');
   var ft = get_value('ft');
 
   // envelope area
-  var ea = mylar_balloon_area(major, 0.02); // TODO seam width
+  var ea = mylar_balloon_area(major, midsection, 0.02); // TODO seam width
   // envelope mass
   var em = ea * ft * fd / 1000;
   // envelope volume
-  var ev = mylar_balloon_volume(major);
+  var ev = mylar_balloon_volume(major, midsection);
 
   $('#em').val(em.toFixed(3));
   $('#ev').val(ev.toFixed(3));
@@ -160,7 +161,7 @@ $(document).ready(function() {
                                  "Gamma Γ", "Pressure-Thermal ratio (Pa/K)");
 
   // calculate result on change
-  var mb_ids = ['major', 'ft', 'fd'];
+  var mb_ids = ['major', 'midsection', 'ft', 'fd'];
   $('#' + mb_ids.join(", #")).bind('keyup change',function() {
     mb_update();
     sp_update(altitude_graph, pressure_graph);
