@@ -63,7 +63,7 @@ function sp_update(altitude_graph, pressure_graph) {
   document.getElementById('ef').innerHTML = (ef*100).toFixed(1) + " %";
 
   // update plots
-  altitude_gamma = get_points(1, 2.1, 0.02, function(gamma) {
+  altitude_gamma = get_points(1, 2.5, 0.02, function(gamma) {
     var volume = ev * gamma;   // (m^3)
     var density = system_mass / volume; // (kg/m^3)
 
@@ -71,7 +71,7 @@ function sp_update(altitude_graph, pressure_graph) {
   });
   altitude_graph.update(altitude_gamma);
 
-  pressure_thermal_gamma = get_points(1, 2.1, 0.02, function(gamma) {
+  pressure_thermal_gamma = get_points(1, 2.5, 0.02, function(gamma) {
     var volume = ev * gamma;   // (m^3)
 
     return pressure_thermal_ratio(mm, lift_mass, volume); // (Pa/K)
