@@ -48,8 +48,13 @@ function sp_update(altitude_graph, pressure_graph) {
   var ev = get_value('ev');
   var pm = get_value('pm');
   var fl = get_value('fl');
+  var gt = document.getElementById('gt').value;
 
-  var mm = MM_HE;           // Helium
+  if (gt == 'Hydrogen') {
+    var mm = MM_H2;           // Hydrogen
+  } else {
+    var mm = MM_HE;           // Helium
+  }
   var lift_mass = em + (pm+fl)/1000; // Total lift mass (kg)
 
   var gm = gas_mass_at_launch(mm, lift_mass); // (kg)
@@ -167,7 +172,7 @@ $(document).ready(function() {
     sp_update(altitude_graph, pressure_graph);
   });
 
-  var sp_ids = ['em', 'ev', 'pm', 'fl'];
+  var sp_ids = ['em', 'ev', 'pm', 'fl', 'gt'];
   $('#' + sp_ids.join(", #")).bind('keyup change',function() {
     sp_update(altitude_graph, pressure_graph);
   });
