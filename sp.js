@@ -1,7 +1,7 @@
 // Equations for Superpressure balloon
 
 // Molar Masses (kg/mol)
-MM_H2  = 1.0098E-3
+MM_H2  = 2.01588E-3
 MM_HE  = 4.0026E-3
 MM_AIR = 28.97E-3
 
