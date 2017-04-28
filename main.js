@@ -51,9 +51,11 @@ function sp_update(altitude_graph, pressure_graph) {
   var gt = document.getElementById('gt').value;
 
   if (gt == 'Hydrogen') {
-    var mm = MM_H2;           // Hydrogen
+    var mm = MM_H2;             // Hydrogen
+  } else if (gt == 'Helium') {
+    var mm = MM_HE;             // Helium
   } else {
-    var mm = MM_HE;           // Helium
+    var mm = MM_95HE_5AIR;      // 95% Helium, 5% Air
   }
   var lift_mass = em + (pm+fl)/1000; // Total lift mass (kg)
 

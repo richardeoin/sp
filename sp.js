@@ -4,6 +4,8 @@
 MM_H2  = 2.01588E-3
 MM_HE  = 4.0026E-3
 MM_AIR = 28.97E-3
+// mole-fraction-weighted sum
+MM_95HE_5AIR = ((0.95*MM_HE)+(0.05*MM_AIR))
 
 // Gas constant (J/Kelvin-mol)
 R = 8.314462
