@@ -99,7 +99,7 @@ function sp_update(altitude_graph, pressure_graph, ascent_graph) {
 
   // ascent_rate_altitude
   var max_alt = altitude_gamma[altitude_gamma.length-1][1];
-  ascent_rate_altitude = get_points(0, max_alt, 0.1, function(altitude) {
+  ascent_rate_altitude = get_points(0, max_alt, 0.25, function(altitude) {
     var density = atmosphere_from_altitude(altitude).density; // (kg/m3)
 
     return ascent_rate(uf, efa, density);
