@@ -45,7 +45,7 @@ function mb_update() {
   $('#ev').val(ev.toFixed(3));
   $('#efa').val(efa.toFixed(3));
 }
-function sp_update(altitude_graph, pressure_graph) {
+function sp_update(altitude_graph, pressure_graph, ascent_graph) {
 
   // Get input values and check them
   var em = get_value('em');
@@ -80,6 +80,7 @@ function sp_update(altitude_graph, pressure_graph) {
   document.getElementById('ar').innerHTML = ar.toFixed(2) + " m/s";
 
   // update plots
+  // altitude_gamma
   altitude_gamma = get_points(1, 2.5, 0.02, function(gamma) {
     var volume = ev * gamma;   // (m^3)
     var density = system_mass / volume; // (kg/m^3)
@@ -88,12 +89,22 @@ function sp_update(altitude_graph, pressure_graph) {
   });
   altitude_graph.update(altitude_gamma);
 
+  // pressure_thermal_gamma
   pressure_thermal_gamma = get_points(1, 2.5, 0.02, function(gamma) {
     var volume = ev * gamma;   // (m^3)
 
     return pressure_thermal_ratio(mm, lift_mass, volume); // (Pa/K)
   });
   pressure_graph.update(pressure_thermal_gamma);
+
+  // ascent_rate_altitude
+  var max_alt = altitude_gamma[altitude_gamma.length-1][1];
+  ascent_rate_altitude = get_points(0, max_alt, 0.1, function(altitude) {
+    var density = atmosphere_from_altitude(altitude).density; // (kg/m3)
+
+    return ascent_rate(uf, efa, density);
+  });
+  ascent_graph.update(ascent_rate_altitude);
 }
 
 $(document).ready(function() {
@@ -172,24 +183,26 @@ $(document).ready(function() {
   //   return false;
   // });
 
-  var altitude_graph = lineGraph("#altitude_graph", 400, 800,
-                                 "Gamma Γ", "Altitude (km)");
-  var pressure_graph = lineGraph("#pressure_graph", 400, 800,
-                                 "Gamma Γ", "Pressure-Thermal ratio (Pa/K)");
+  var altitude_graph	= lineGraph("#altitude_graph", 400, 800,
+                                    "Gamma Γ", "Altitude (km)");
+  var pressure_graph	= lineGraph("#pressure_graph", 400, 800,
+                                    "Gamma Γ", "Pressure-Thermal ratio (Pa/K)");
+  var ascent_graph 		= lineGraph("#ascent_graph", 400, 800,
+                                    "Altitude (km)", "Ascent Rate (m/s)");
 
   // calculate result on change
   var mb_ids = ['major', 'midsection', 'ft', 'fd'];
   $('#' + mb_ids.join(", #")).bind('keyup change',function() {
     mb_update();
-    sp_update(altitude_graph, pressure_graph);
+    sp_update(altitude_graph, pressure_graph, ascent_graph);
   });
 
   var sp_ids = ['em', 'ev', 'pm', 'fl', 'gt'];
   $('#' + sp_ids.join(", #")).bind('keyup change',function() {
-    sp_update(altitude_graph, pressure_graph);
+    sp_update(altitude_graph, pressure_graph, ascent_graph);
   });
 
 
   mb_update();
-  sp_update(altitude_graph, pressure_graph);
+  sp_update(altitude_graph, pressure_graph, ascent_graph);
 });
