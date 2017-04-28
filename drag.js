@@ -37,10 +37,9 @@ function sea_level_ascent_rate(upwards_force, area) {
 }
 
 /**
- * Returns the sea level ascent rate.
+ * Returns the ascent rate.
  * ASSUMING:
  *   * Standard conditions
- *   * At sea level
  *
  * upwards force (N)
  * area (m2)
