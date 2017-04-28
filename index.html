@@ -141,6 +141,10 @@
       <input type="text" id="ev" class="input_field numeric scrollable"
              value="1" data-step="0.1" tabindex="1"/>
 
+      <h4>Effective Cross-sectional Area (m<sup>2</sup>)</h4>
+      <input type="text" id="efa" class="input_field numeric scrollable"
+             value="1" data-step="0.1" tabindex="1"/>
+
       <h2>Masses</h2>
 
       <h4>Payload Mass (g)</h4>
@@ -173,6 +177,17 @@
         <span class="output_data" id="ef"></span>
       </p>
 
+      <h2>Ascent</h2>
+
+      <p>
+        <span class="output_label">Upwards force:</span>
+        <span class="output_data" id="uf"></span>
+      </p><p>
+        <span class="output_label">Ascent Rate at Sea Level:</span>
+        <span class="output_data" id="ar"></span>
+      </p>
+
+
       <h2>Float Altitude</h2>
 
       <div id="altitude_graph"></div>
@@ -198,6 +213,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script src="isa.js"></script>
     <script src="mylar_balloon.js"></script>
+    <script src="drag.js"></script>
     <script src="sp.js"></script>
     <script src="d3_stuff.js"></script>
     <script src="main.js"></script>

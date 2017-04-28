@@ -38,14 +38,19 @@ function mb_update() {
   // envelope volume
   var ev = mylar_balloon_volume(major, midsection);
 
+  // envelope effective cross-sectional area
+  var efa = mylar_balloon_csa(major);
+
   $('#em').val(em.toFixed(3));
   $('#ev').val(ev.toFixed(3));
+  $('#efa').val(efa.toFixed(3));
 }
 function sp_update(altitude_graph, pressure_graph) {
 
   // Get input values and check them
   var em = get_value('em');
   var ev = get_value('ev');
+  var efa = get_value('efa');
   var pm = get_value('pm');
   var fl = get_value('fl');
   var gt = document.getElementById('gt').value;
@@ -62,12 +67,17 @@ function sp_update(altitude_graph, pressure_graph) {
   var gm = gas_mass_at_launch(mm, lift_mass); // (kg)
   var gv = gas_volume_stp(mm, gm);  // (m^3)
   var ef = gv / ev;
+  var uf = force_from_lift(fl/1000); // (N)
+  var ar = sea_level_ascent_rate(uf, efa); // (m/s)
 
   var system_mass = em + (pm/1000) + gm; // Mass of system (kg)
 
   document.getElementById('gm').innerHTML = gm.toFixed(4) + " kg";
   document.getElementById('gv').innerHTML = gv.toFixed(3) + " m<sup>3</sup>";
   document.getElementById('ef').innerHTML = (ef*100).toFixed(1) + " %";
+
+  document.getElementById('uf').innerHTML = uf.toFixed(3) + " N";
+  document.getElementById('ar').innerHTML = ar.toFixed(2) + " m/s";
 
   // update plots
   altitude_gamma = get_points(1, 2.5, 0.02, function(gamma) {
