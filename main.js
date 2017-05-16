@@ -22,6 +22,14 @@
 function get_value(id) {
   return parseFloat(document.getElementById(id).value);
 }
+// get parameter from url encoded string
+function get_query_parameter(param) {
+  var hash = window.location.hash.slice(2);
+  var m = new RegExp(param + '=([^&]*)').exec(hash);
+  return m && decodeURIComponent(m[1]);
+}
+// hash url
+var history_supported = (typeof history !== 'undefined');
 
 
 function mb_update() {
@@ -200,6 +208,33 @@ $(document).ready(function() {
   var sp_ids = ['em', 'ev', 'pm', 'fl', 'gt'];
   $('#' + sp_ids.join(", #")).bind('keyup change',function() {
     sp_update(altitude_graph, pressure_graph, ascent_graph);
+  });
+
+  // set values from query string
+  var input_ids = mb_ids.concat(sp_ids);
+  var query_vars = {};
+  $.each(input_ids, function(k, name) {
+    // set current value if present
+    var val = get_query_parameter(name);
+    if (val) {
+      $('#' + name).val(val);
+      query_vars[name] = val;
+    }
+
+    // update
+    $('#' + name).bind('keyup change',function() {
+      query_vars[name] = document.getElementById(name).value;
+      var query_string = jQuery.param(query_vars);
+      if (query_string) {
+        // set state
+        if (history_supported) {
+          var url = document.location.href.split("#",1)[0];
+          history.replaceState(null, null, url + "#!" + query_string);
+        } else {
+          document.location.hash = "!" + hash;
+        }
+      }
+    });
   });
 
 
