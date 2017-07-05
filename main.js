@@ -93,7 +93,9 @@ function sp_update(altitude_graph, pressure_graph, ascent_graph) {
     var volume = ev * gamma;   // (m^3)
     var density = system_mass / volume; // (kg/m^3)
 
-    return altitude_from_density(density); // (km)
+    var altitude_km = altitude_from_density(density); // (km)
+
+    return [altitude_km, 1000*altitude_km/FT2METERS]; // (km), (feet)
   });
   altitude_graph.update(altitude_gamma);
 
@@ -192,7 +194,7 @@ $(document).ready(function() {
   // });
 
   var altitude_graph	= lineGraph("#altitude_graph", 400, 800,
-                                    "Gamma Γ", "Altitude (km)");
+                                    "Gamma Γ", "Altitude (km)", "Altitude (ft)");
   var pressure_graph	= lineGraph("#pressure_graph", 400, 800,
                                     "Gamma Γ", "Pressure-Thermal ratio (Pa/K)");
   var ascent_graph 		= lineGraph("#ascent_graph", 400, 800,

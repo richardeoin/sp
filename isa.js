@@ -109,7 +109,7 @@ function get_points(start, stop, inc, func) {
   list = []
 
   for (var i = start; i <= stop; i += inc) {
-    list.push([i,func(i)]);
+    list.push([i].concat(func(i)));
   }
   return list
 }

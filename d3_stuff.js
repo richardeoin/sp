@@ -1,4 +1,5 @@
-var lineGraph = function(selector, containerHeight, containerWidth, xLabel, yLabel) {
+   var lineGraph = function(selector, containerHeight, containerWidth,
+                         xLabel, yLabel, y2label) {
 
   var svg;
   var data;
@@ -20,12 +21,21 @@ var lineGraph = function(selector, containerHeight, containerWidth, xLabel, yLab
 
     var xDomain = d3.extent(data, function(d) { return d[0]; })
     var yDomain = d3.extent(data, function(d) { return d[1]; });
+    if (y2label) {
+      var y2Domain = d3.extent(data, function(d) { return d[2]; });
+    }
 
     var xScale = d3.scale.linear().range([0, width]).domain(xDomain);
     var yScale = d3.scale.linear().range([height, 0]).domain(yDomain);
+    if (y2label) {
+      var y2Scale = d3.scale.linear().range([height, 0]).domain(y2Domain);
+    }
 
     var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
     var yAxis = d3.svg.axis().scale(yScale).orient('left');
+    if (y2label) {
+      var y2Axis = d3.svg.axis().scale(y2Scale).orient('right');
+    }
 
     var line = d3.svg.line()
       .x(function(d) { return xScale(d[0]); })
@@ -63,6 +73,19 @@ var lineGraph = function(selector, containerHeight, containerWidth, xLabel, yLab
       .attr('font-size', 16)
       .attr('text-anchor', 'end')
       .text(yLabel);
+
+    if (y2label) {
+      g.append('g')
+        .attr('class', 'y axis')
+        .attr("transform", "translate(" + width + " ,0)")
+        .call(y2Axis)
+        .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 50)
+        .attr('font-size', 16)
+        .attr('text-anchor', 'end')
+        .text(y2label);
+    }
 
     g.append('path')
       .datum(data)
